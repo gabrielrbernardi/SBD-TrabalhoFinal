@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import knex from "../../database/connection";
 
 class Controller{
-    
+    //Exercicio 1
+    //Criacao
     async createDisciplina(request: Request, response: Response){
         const {siglaDisciplina, nomeDisciplina, nroCreditos, idTurma} = request.body;
         const disciplina = {
@@ -38,6 +39,7 @@ class Controller{
         })
     }
     
+    //Alteracao
     async updateDisciplina(request: Request, response: Response){
         const {siglaDisciplina, nomeDisciplina, nroCreditos} = request.body;
         const disciplinaDB = await knex('Disciplina').where('siglaDisciplina', siglaDisciplina).update({
@@ -74,6 +76,7 @@ class Controller{
         }
     }
 
+    //Exclusao
     async deleteDisciplina(request: Request, response: Response){
         const {siglaDisciplina} = request.body;
         const disciplinaDB = await knex('Disciplina').where('siglaDisciplina', siglaDisciplina).del();
@@ -95,6 +98,7 @@ class Controller{
         }
     }
 
+    //Consultas
     async showAlunos(request: Request, response: Response){
         const alunos = await knex("Aluno").select("*");
         return response.json(alunos);
@@ -113,6 +117,17 @@ class Controller{
     async showDisciplina(request: Request, response: Response){
         const disciplinas = await knex("Disciplina").select("*");
         return response.json(disciplinas);
+    }
+
+    //Exercicio 2
+    async transactionExample(request: Request, response: Response){
+        const {ano, nroAlunos, siglaFaculdade, idTurma} = request.body;
+
+        const trx = await knex.transaction();
+        await trx('Turma').where("idTurma", idTurma).update({ano: ano}).catch(err => response.json({transactioned: false, error: err}));
+        await trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => response.json({transactioned: false, error: err}));
+        await trx.commit();
+        return response.json({transactioned: true});
     }
 }
 

@@ -18,4 +18,8 @@ routes.get("/faculdade", controller.showFaculdades);
 routes.get("/turma", controller.showTurma);
 routes.get("/disciplina", controller.showDisciplina);
 
+
+
+routes.put("/transacao", controller.transactionExample);
+
 export default routes;
