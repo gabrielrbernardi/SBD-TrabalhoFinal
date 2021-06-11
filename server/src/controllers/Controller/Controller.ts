@@ -12,8 +12,8 @@ class Controller{
             nroCreditos,
             idTurma,
         }
-        await knex("Disciplina").insert(disciplina).then(responseStudent => {
-            if(responseStudent){
+        await knex("Disciplina").insert(disciplina).then(responseDiscipline => {
+            if(responseDiscipline){
                 return response.json({createdDsicipline: true});
             }else{
                 return response.json({createdDsicipline: false, error: "Não foi possível criar a Disciplina."});
