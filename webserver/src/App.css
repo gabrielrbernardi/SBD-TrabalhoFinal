@@ -24,6 +24,33 @@
   color: white;
 }
 
+a{
+  color: white;
+  text-decoration: none;
+}
+
+a:hover{
+  color: white;
+  text-decoration: none;
+}
+
+input{
+  width: 40vw;
+}
+
+.form{
+  width: 50vw;;
+}
+
+.textarea{
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  border-color: #475059;
+  cursor: text;
+  height: 50vh;
+}
+
 .App-link {
   color: #61dafb;
 }
