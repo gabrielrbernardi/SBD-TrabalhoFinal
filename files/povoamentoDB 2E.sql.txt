@@ -1,0 +1,21 @@
+--alunos: 
+-- Gabriel Solis Corrêa - 11711BCC032
+-- Gabriel Ribeiro Bernardi - 11821BCC036
+-- Guilherme Soares Correa - 11821BCC026
+
+insert into turma values(1, 1, 2021, 'Bloco 1b'); -- cadastro turma
+insert into disciplina values('CA', 'Programacao legal', 4, 1); --cadastro disciplina
+insert into disciplina values('CB', 'Programacao legal 2', 4, 1); --cadastro disciplina
+insert into faculdade values('facom', '1b', 4, 100, 100000); --cadastro faculdade
+update faculdade set siglaDisciplina='CA' where siglaFac='facom'; --update faculdade
+insert into professor values(1, 'Louis Cloud', '1990-5-20', 95.90, 'facom'); --cadastro professor
+
+insert into aluno values(1, 'gabriel', '2001-07-12', 100, '34-99999-9999', 'facom'); --cadastro aluno
+insert into professorDisciplina values(1, 'CA'); --inscricao de professor em uma disciplina
+insert into turmaAluno values(1, 1); --inscricao de aluno em um turma
+insert into disciplina_preRequisito values('CA', 'CB'); --definica de pre requisito de uma turma
+
+insert into salaDeAula values(1, '1B', '20', 'facom'); --inscricao de sala de aula
+insert into informacoesAlunoDisciplina values('CA', 1, 99.7, 1); --cadastro das informacoes dos alunos
+insert into iniciacaoCientifica values (1, 1); --inscricao de aluno em iniciacao cientifica
+insert into universidade values(1, 'facom'); --inscricao de sala de aula na universidade

@@ -43,7 +43,7 @@ input{
 }
 
 .textarea{
-  background-color: transparent;
+  background-color: #212529;
   color: white;
   font-size: 16px;
   border-color: #475059;
@@ -53,6 +53,19 @@ input{
 
 .App-link {
   color: #61dafb;
+}
+
+.btn-light:hover{
+  background-color: rgb(201, 201, 201) !important;
+}
+
+.link{
+  font-size: 16px;
+  transition: .2s;
+}
+
+.link:hover{
+  opacity: 0.6;  
 }
 
 @keyframes App-logo-spin {

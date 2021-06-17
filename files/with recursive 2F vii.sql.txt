@@ -1,0 +1,44 @@
+--alunos: 
+-- Gabriel Solis Corrêa - 11711BCC032
+-- Gabriel Ribeiro Bernardi - 11821BCC036
+-- Guilherme Soares Correa - 11821BCC026
+
+WITH recursive DisciplinasERequisitadas
+(
+  siglaDisciplina,
+  nomeDisciplina,
+  nroCredito,
+  siglaDisciplinaRequisitada,
+  nomeDisciplinaRequisitada,
+  hierarquia
+)
+AS
+(
+  SELECT
+    siglaDisciplina,
+    nomeDisciplina,
+    nroCreditos,
+    siglaDisciplinaPreRequisito,
+    nomeDisciplina,
+    0
+  FROM disciplina d natural join disciplina_preRequisito dr
+  WHERE d.siglaDisciplina = dr.siglaDisciplina AND dr.siglaDisciplinaPreRequisito IS NULL
+  
+  UNION ALL
+  
+  SELECT
+    d.siglaDisciplina,
+    d.nomeDisciplina,
+    d.nroCreditos,
+    dr.sigladisciplinaprerequisito,
+    DisciplinasERequisitadas.nomeDisciplina,
+    DisciplinasERequisitadas.hierarquia + 1
+  FROM disciplina d
+    LEFT JOIN disciplina_preRequisito dr ON d.siglaDisciplina = dr.siglaDisciplina
+    inner JOIN DisciplinasERequisitadas ON dr.siglaDisciplinaPreRequisito = DisciplinasERequisitadas.siglaDisciplina
+)
+
+SELECT *
+FROM DisciplinasERequisitadas
+ORDER BY hierarquia
+

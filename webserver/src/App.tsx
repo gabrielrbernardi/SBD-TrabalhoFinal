@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import api from './api';
 import './App.css';
 import Discipline from './Discipline';
+import Transaction from './Transaction';
 import Student from './Student';
 
 function App() {
@@ -12,8 +13,8 @@ function App() {
   const [getUpdateDiscipline, setUpdateDiscipline] = useState(Number);
   const [getUpdateStudent, setUpdateStudent] = useState(Number);
   const [getList, setList] = useState(Number);
-  const [getDeleteDiscipline, setDeleteDiscipline] = useState(Number);
-  const [getDeleteStudent, setDeleteStudent] = useState(Number);
+  const [getDelete, setDelete] = useState(Number);
+  const [getTransaction, setTransaction] = useState(Number);
   
   const [getPkDelete, setPkDelete] = useState('');
   const [getPlaceholder, setPlaceHolder] = useState('');
@@ -47,7 +48,7 @@ function App() {
 
   async function handleSubmitDelete(event: FormEvent){
     event.preventDefault();
-    if(getDeleteDiscipline == 1){ //Exclusao de disciplina
+    if(getDelete == 1){ //Exclusao de disciplina
       await api.put('/disciplina/delete', {
         siglaDisciplina: getPkDelete,
       }).then(() => {
@@ -55,7 +56,7 @@ function App() {
       }).catch(err => {
         setStatusMessage(err.response.data.error);
       })
-    }else if(getDeleteDiscipline == 2){ //Exclusao de aluno
+    }else if(getDelete == 2){ //Exclusao de aluno
       var id = parseInt(getPkDelete)
       await api.put(`/aluno/delete/${id}`).then(() => {
         setStatusMessage("Aluno excluído com sucesso.")
@@ -68,6 +69,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
+        <a className="mb-2">Trabalho Final SBD</a>
         { getCreateDiscipline === 1
           ?
             <>
@@ -116,23 +118,25 @@ function App() {
         { getList === 1
           ?
           <>
-              <div className="d-flex justify-content-center container bg-dark">
+              <div className="d-flex justify-content-center container col-6">
                 <div className="row">
                   <button className="btn btn-primary col mx-2" onClick={() => listComponents(1)}>Listar Alunos</button>
                   <button className="btn btn-primary col mx-2" onClick={() => listComponents(2)}>Listar Disciplinas</button>
                   <button className="btn btn-primary col mx-2" onClick={() => listComponents(3)}>Listar Turmas</button>
                   <button className="btn btn-primary col mx-2" onClick={() => listComponents(4)}>Listar Faculdades</button>
+                  <br/>
                   <textarea disabled className="mt-2 textarea" value={getListContent}></textarea>
+                    <button className="btn btn-primary col-2 mx-auto" onClick={() => setListContent('')}>Limpar</button>
+                  <div className="">
+                    <button className="btn btn-info my-2 form col-2" onClick={() => setList(0)}>Voltar</button>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-dark">
-                <button className="btn btn-info my-2 form col-2" onClick={() => setList(0)}>Voltar</button>
               </div>
             </>
           : <></>
         }
         
-        { getDeleteDiscipline === 1
+        { getDelete === 1
           ?
           <>
             <form className="bg-dark px-4 form" onSubmit={handleSubmitDelete}>
@@ -146,10 +150,10 @@ function App() {
               <button type="submit" className="btn btn-danger">Excluir</button>
             </form>
             <div className="bg-dark">
-              <button className="btn btn-info my-2 form col-2" onClick={() => {setDeleteDiscipline(0); setStatusMessage(''); setPkDelete('')}}>Voltar</button>
+              <button className="btn btn-info my-2 form col-2" onClick={() => {setDelete(0); setStatusMessage(''); setPkDelete('')}}>Voltar</button>
             </div>
           </>
-          : getDeleteDiscipline === 2
+          : getDelete === 2
             ?
             <>
               <form className="bg-dark px-4 form" onSubmit={handleSubmitDelete}>
@@ -163,14 +167,25 @@ function App() {
                 <button type="submit" className="btn btn-danger">Excluir</button>
               </form>
               <div className="bg-dark">
-                <button className="btn btn-info my-2 form col-2" onClick={() =>{setDeleteDiscipline(0); setStatusMessage('');  setPkDelete('')}}>Voltar</button>
+                <button className="btn btn-info my-2 form col-2" onClick={() =>{setDelete(0); setStatusMessage('');  setPkDelete('')}}>Voltar</button>
               </div>
             </>
             :<></>
 
         }
+        
+        { getTransaction === 1
+          ?
+            <>
+              <Transaction/>
+              <div className="bg-dark">
+                <button className="btn btn-info my-2 form col-2" onClick={() => setTransaction(0)}>Voltar</button>
+              </div>
+            </>
+          : <></>
+        }
 
-        { getCreateDiscipline === 0 && getCreateStudent === 0 && getUpdateDiscipline === 0 && getUpdateStudent === 0 && getList === 0 && getDeleteDiscipline === 0
+        { getCreateDiscipline === 0 && getCreateStudent === 0 && getUpdateDiscipline === 0 && getUpdateStudent === 0 && getList === 0 && getDelete === 0 && getTransaction === 0
           ?
             <div className="d-flex justify-content-center container">
               <div className="row">
@@ -181,12 +196,15 @@ function App() {
 
                 <button className="btn btn-secondary col mx-2" onClick={() => setList(1)}>Listar</button>
                 
-                <button className="btn btn-danger col mx-2" onClick={() => {setDeleteDiscipline(1); setLabel('Sigla da disciplina a ser excluída'); setPlaceHolder('Digite a Sigla');}}>Excluir Disciplina</button>
-                <button className="btn btn-danger col mx-2" onClick={() => {setDeleteDiscipline(2); setLabel('ID do aluno a ser excluído'); setPlaceHolder('Digite o ID');}}>Excluir Aluno</button>
+                <button className="btn btn-danger col mx-2" onClick={() => {setDelete(1); setLabel('Sigla da disciplina a ser excluída'); setPlaceHolder('Digite a Sigla');}}>Excluir Disciplina</button>
+                <button className="btn btn-danger col mx-2" onClick={() => {setDelete(2); setLabel('ID do aluno a ser excluído'); setPlaceHolder('Digite o ID');}}>Excluir Aluno</button>
+                <button className="btn btn-light col mx-2" onClick={() => {setTransaction(1)}}>Transação</button>
               </div>
             </div>
           :<></>
         }
+        <a className="mt-2 link" href="https://github.com/gabrielrbernardi/SBD-TrabalhoFinal" target="_blank">Github</a>
+
       </div>
     </div>
   );

@@ -1,0 +1,10 @@
+--alunos: 
+-- Gabriel Solis Corrêa - 11711BCC032
+-- Gabriel Ribeiro Bernardi - 11821BCC036
+-- Guilherme Soares Correa - 11821BCC026
+
+CREATE VIEW AlunosConfidencial AS
+SELECT nomeAluno, dataNascimento
+FROM aluno where idAluno > 1;
+
+select * from AlunosConfidencial;

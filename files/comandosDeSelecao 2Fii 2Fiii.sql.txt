@@ -1,0 +1,32 @@
+--alunos: 
+-- Gabriel Solis Corrêa - 11711BCC032
+-- Gabriel Ribeiro Bernardi - 11821BCC036
+-- Guilherme Soares Correa - 11821BCC026
+
+--2.f.ii
+
+select fa.siglaFac, d.siglaDisciplina
+from faculdade fa, disciplina d;
+
+select al.dataNascimento as dataNascimentoAluno, pr.dataNascimento as dataNascimentoProf
+from aluno al, professor pr;
+
+select pr.idProf, di.siglaDisciplina
+from professor pr, disciplina di;
+
+------------------
+--2.f.iii
+
+select nomeAluno from aluno
+union all
+select nomeProf from professor
+group by nomeProf;
+
+select nomeAluno, nomeProf
+from aluno natural join professor;
+
+SELECT al.nomeAluno, al.idAluno FROM aluno al
+union all
+SELECT pr.nomeProf, pr.idProf FROM professor pr
+union all
+SELECT fa.siglaFac, fa.nroAlunos FROM faculdade fa;

@@ -157,13 +157,19 @@ class Controller{
 
     //Exercicio 2
     async transactionExample(request: Request, response: Response){
-        const {ano, nroAlunos, siglaFaculdade, idTurma} = request.body;
-
-        const trx = await knex.transaction();
-        await trx('Turma').where("idTurma", idTurma).update({ano: ano}).catch(err => response.json({transactioned: false, error: err}));
-        await trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => response.json({transactioned: false, error: err}));
-        await trx.commit();
-        return response.json({transactioned: true});
+        try{
+            const {ano, nroAlunos, siglaFaculdade, idTurma} = request.body;
+            if(!ano || !nroAlunos || !siglaFaculdade || !idTurma){
+                throw 'Preencha todos os campos';
+            }
+            const trx = await knex.transaction();
+            await trx('Turma').where("idTurma", idTurma).update({ano: ano}).catch(err => {throw err});
+            await trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => {throw err});
+            await trx.commit();
+            return response.json({transactioned: true, message: "Transação realizada com sucesso."});
+        }catch(err){
+            response.status(400).json({transactioned: false, error: err})
+        }
     }
 }
 
