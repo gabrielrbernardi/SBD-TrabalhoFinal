@@ -163,8 +163,9 @@ class Controller{
                 throw 'Preencha todos os campos';
             }
             const trx = await knex.transaction();
-            await trx('Turma').where("idTurma", idTurma).update({ano: ano}).catch(err => {throw err});
-            await trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => {throw err});
+            await trx('Turma').where("idTurma", idTurma).update({ano: ano}).then(() => {
+                trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => {throw err});
+            }).catch(err => {trx.rollback(); throw err});
             await trx.commit();
             return response.json({transactioned: true, message: "Transação realizada com sucesso."});
         }catch(err){
