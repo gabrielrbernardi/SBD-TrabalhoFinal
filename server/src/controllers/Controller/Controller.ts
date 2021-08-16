@@ -162,9 +162,17 @@ class Controller{
             if(!ano || !nroAlunos || !siglaFaculdade || !idTurma){
                 throw 'Preencha todos os campos';
             }
+            const turma = await knex("Turma").where("idTurma", idTurma);
+            if(!turma[0]){
+                throw "Não existe a turma solicitada.";
+            }
             const trx = await knex.transaction();
             await trx('Turma').where("idTurma", idTurma).update({ano: ano}).then(() => {
-                trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => {throw err});
+                const faculdade = knex("Faculdade").where("siglaFaculdade", siglaFaculdade);
+                if(!faculdade[0]){
+                    throw "Não existe a faculdade solicitada.";
+                }
+                trx('Faculdade').where("siglaFaculdade", siglaFaculdade).update({nroAlunos: nroAlunos}).catch(err => {trx.rollback(); throw err});
             }).catch(err => {trx.rollback(); throw err});
             await trx.commit();
             return response.json({transactioned: true, message: "Transação realizada com sucesso."});

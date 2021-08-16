@@ -12,7 +12,6 @@ BEGIN
 		IF fileira.idAluno IS NULL THEN
 			erro := true; 
 			textoerro := "Id de Aluno " || fileira.nomeAluno || " não pode ser núlo.";
-			RETURN
 		ELSE 
 			IF fileira.idAluno < 0 THEN
 				erro := true; 
